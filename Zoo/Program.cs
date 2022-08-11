@@ -45,7 +45,7 @@ namespace Zoo
                 switch ( int.Parse ( Console.ReadLine () ) )
                 {
                     case 1:
-                        ShowVolier ();
+                        ShowVolier ( );
                         break;
                     case 2:
                         ZooTour ();
@@ -65,7 +65,7 @@ namespace Zoo
             }
         }
 
-        private void ShowVolier ()
+        private void ShowVolier ( )
         {
             Console.WriteLine ("Выберите к какому вальеру вы хотите подойти\n" +
                     "1 - Обезьяны.\n" +
@@ -73,34 +73,35 @@ namespace Zoo
                     "3 - Жирафы\n" +
                     "4 - Птицы\n" +
                     "5 - Рыбы\n");
+            int userInput = int.Parse ( Console.ReadLine () );
 
-            switch ( int.Parse ( Console.ReadLine () ) )
+            switch ( userInput  )
             {
                 case 1:
-                    _numberAnimal = 0;
+                    _numberAnimal = userInput - 1;
                     break;
                 case 2:
-                    _numberAnimal = 1;
+                    _numberAnimal = userInput - 1;
                     break;
                 case 3:
-                    _numberAnimal = 2;
+                    _numberAnimal = userInput - 1;
                     break;
                 case 4:
-                    _numberAnimal = 3;
+                    _numberAnimal = userInput - 1;
                     break;
                 case 5:
-                    _numberAnimal = 4;
+                    _numberAnimal = userInput - 1;
                     break;
                 default:
                     Console.WriteLine ( "Неверно указано значение!" );
                     break;
             }
-            ShowAnimals ();
+            ShowAnimals (  );
         }
 
         private void ShowAnimals ( )
         {
-            Console.WriteLine ( "Вы преближаетесь к Вольеу" );
+            Console.WriteLine ( $"Вы преближаетесь к Вольеу {_animal [_numberAnimal].Volier}, в нем {_animal [_numberAnimal].NumberAnimal} животных." );
             for ( int i = 0; i < _animal [_numberAnimal].NumberAnimal; i++ )
             {
                 _animal [ _numberAnimal ].ShowInfoVolier ();
@@ -116,7 +117,7 @@ namespace Zoo
             }
         }
 
-        private void ZooTour ()
+        private void ZooTour (  )
         {
             for ( int i = 0; i < _animal.Count; i++ )
             {
@@ -124,15 +125,13 @@ namespace Zoo
                 _animal [ i ].ShowInfo ();
                 Console.ReadKey ();
             }
-            ShowVolier ();
+            ShowVolier (  );
         }
     }
 
     class Animal
     {
         private Random _rnd = new Random ();
-
-        public Animal () { }
 
         public Animal ( string name, string volier, int numberAnimal )
         {
@@ -145,24 +144,30 @@ namespace Zoo
 
         public string Name { get; private set; }
         public string Gender { get; private set; }
-        public string Voice { get; set; }
+        public string Voice { get; private set; }
         public string Volier { get; private set; }
         public int NumberAnimal { get; private set; }
-
 
         public void ShowInfo ()
         {
             Console.WriteLine ( $"Вольер {Volier}, в нем {Name}, {NumberAnimal} животных" );
         }
 
-        public void ShowInfoVolier ()
+        public void SetSoundToAnimals (string voice)
         {
-            Console.WriteLine ( $"{Volier} В нем {Name}, пол {IdentifyTheGender ()} и издает {Voice}, {NumberAnimal} животных" );
+            Voice = voice;
         }
 
-        public string IdentifyTheGender ()
+        public void ShowInfoVolier ()
         {
-            if ( _rnd.Next ( 0, 2 ) > 0 )
+            Console.WriteLine ( $"В нем {Name}, пол {IdentifyTheGender ()} и издает {Voice}." );
+        }
+
+        private string IdentifyTheGender ()
+        {
+            int maxRandomNumber = 2;
+
+            if ( _rnd.Next ( 0, maxRandomNumber ) > 0 )
             {
                 Gender = "Мужской";
             }
@@ -178,7 +183,7 @@ namespace Zoo
     {
         public Monkeys ( string name, string volier, int numberAnimal  ) : base ( name, volier , numberAnimal )
         {
-            Voice = "У-у-у-а";
+            SetSoundToAnimals("У-у-у-а");
         }
     }
 
@@ -186,7 +191,7 @@ namespace Zoo
     {
         public Lions ( string name, string volier, int numberAnimal ) : base ( name, volier , numberAnimal )
         {
-            Voice = "Ррррр";
+            SetSoundToAnimals( "Ррррр" );
         }
     }
 
@@ -194,7 +199,7 @@ namespace Zoo
     {
         public Giraffes ( string name, string volier, int numberAnimal  ) : base ( name, volier, numberAnimal )
         {
-            Voice = "Хрум-хрум";
+            SetSoundToAnimals ( "Хрум-хрум" );
         }
     }
 
@@ -202,7 +207,7 @@ namespace Zoo
     {
         public Birds ( string name, string volier, int numberAnimal ) : base ( name, volier, numberAnimal )
         {
-            Voice = " Чик-чирик";
+            SetSoundToAnimals ( " Чик-чирик" );
         }
     }
 
@@ -210,7 +215,7 @@ namespace Zoo
     {
         public Fish ( string name, string volier, int numberAnimal ) : base ( name, volier , numberAnimal )
         {
-            Voice = " Буль-буль";
+            SetSoundToAnimals ( " Буль-буль" );
         }
     }
 }
